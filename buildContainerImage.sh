@@ -130,6 +130,8 @@ if [ "${FASTSTART}" == "true" ]; then
   DOCKER_FILE="Dockerfile.faststart"
 fi;
 
+IMAGE_NAME="${IMAGE_NAME}-ptbr"
+
 echo "BUILDER: building image $IMAGE_NAME"
 
 BUILD_START_TMS=$(date '+%s')

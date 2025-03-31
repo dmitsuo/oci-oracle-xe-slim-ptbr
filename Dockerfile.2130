@@ -28,7 +28,8 @@ ENV ORACLE_BASE=/opt/oracle \
     ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE \
     ORACLE_SID=XE \
     PATH=${PATH}:/opt/oracle/product/21c/dbhomeXE/bin:/opt/oracle \
-    NLS_LANG=.AL32UTF8
+    NLS_LANG=.WE8ISO8859P1 \
+    ORACLE_CHARACTERSET=WE8ISO8859P1
 
 COPY oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm install.2130.sh container-entrypoint.sh resetPassword createAppUser healthcheck.sh /install/
 
@@ -47,7 +48,8 @@ ENV ORACLE_BASE=/opt/oracle \
     ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE \
     ORACLE_SID=XE \
     PATH=${PATH}:/opt/oracle/product/21c/dbhomeXE/bin:/opt/oracle \
-    NLS_LANG=.AL32UTF8
+    NLS_LANG=.WE8ISO8859P1 \
+    ORACLE_CHARACTERSET=WE8ISO8859P1
 
 COPY --from=builder / /
 RUN rm -rf "${ORACLE_BASE}"

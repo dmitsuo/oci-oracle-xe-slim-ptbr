@@ -80,6 +80,9 @@ rm -rf /tmp/7z
 
 echo "BUILDER: installing database binaries"
 
+export ORACLE_CHARACTERSET=WE8ISO8859P1
+export NLS_LANG=.WE8ISO8859P1
+
 # Install Oracle XE
 rpm -iv --nodeps /install/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
 
@@ -205,7 +208,8 @@ export ORACLE_SID=XE
 export PATH=\${PATH}:\${ORACLE_HOME}/bin:\${ORACLE_BASE}
 
 # Use UTF-8 by default
-export NLS_LANG=.AL32UTF8
+export NLS_LANG=.WE8ISO8859P1
+export ORACLE_CHARACTERSET=WE8ISO8859P1
 " >> "${ORACLE_BASE}"/.bash_profile
 chown oracle:dba "${ORACLE_BASE}"/.bash_profile
 
@@ -270,6 +274,17 @@ su -p oracle -c "sqlplus -s / as sysdba" << EOF
 
    -- Reboot of DB
    SHUTDOWN IMMEDIATE;
+
+   -- change database charset - BEGIN
+   -- shutdown immediate;
+   prompt Changing database character set - BEGIN
+   startup restrict;
+   ALTER DATABASE CHARACTER SET INTERNAL_USE WE8ISO8859P1 ;
+   shutdown immediate;
+   prompt Changing database character set - END
+   -- startup;
+   -- change database charset - END
+
    STARTUP;
 
    -- Setup healthcheck user
