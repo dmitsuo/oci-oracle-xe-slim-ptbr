@@ -98,6 +98,10 @@ mv "${ORACLE_HOME}"/bin/netca "${ORACLE_HOME}"/bin/netca.bak
 echo "exit 0" > "${ORACLE_HOME}"/bin/netca
 chmod a+x "${ORACLE_HOME}"/bin/netca
 
+echo "Set permissions to avoid ORA-39213 error on Data Pump impdp (MOS 801337.1)"
+echo "chmod -Rf 774 $ORACLE_HOME/rdbms/xml/xsl"
+chmod -Rf 774 "$ORACLE_HOME"/rdbms/xml/xsl 2> /dev/null || true
+
 echo "BUILDER: configuring database"
 
 # Set random password
@@ -1947,6 +1951,9 @@ su -p oracle -c "sqlplus -s / as sysdba" << EOF
 
    -- Exit on any errors
    WHENEVER SQLERROR EXIT SQL.SQLCODE
+
+   prompt Executing dbms_metadata_util.load_stylesheets to avoid ORA-39213 error on Data Pump impdp (MOS 801337.1)
+   exec dbms_metadata_util.load_stylesheets;   
 
    -- Shutdown database gracefully
    SHUTDOWN IMMEDIATE;
